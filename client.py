@@ -1,6 +1,6 @@
 import socket
 
-HOST = '127.0.0.1'
+HOST = '120.109.159.29'
 PORT = 8000
 server_addr = (HOST, PORT)
 
