@@ -1,0 +1,9 @@
+
+
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 800
+SCREEN_COLOR = "black"
+SCREEN_TITLE = "噴噴"
+
+# Player
+HIT_BOX = 30
