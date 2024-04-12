@@ -1,6 +1,6 @@
 import socket
 
-HOST = '120.109.159.29'
+HOST = '120.109.159.26'
 PORT = 8000
 
 # AF_INET: 伺服器與伺服器間串接, SOCK_DGRAM: UDP免連線訊息傳輸通道

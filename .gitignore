@@ -1,1 +1,3 @@
 venv/
+game/__pycache__/
+test.py
