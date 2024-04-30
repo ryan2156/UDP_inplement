@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 
 player = Player(50, 50, PLAYER_COLOR)
 
+
 def main():
     while True:
         game_screen.surface.fill(BACKGROUND_COLOR)
@@ -22,19 +23,20 @@ def main():
                 pygame.quit()
                 # 終止程式
                 sys.exit()
-            # 移動
-            elif(event.type == pygame.KEYDOWN):
-                if(event.key == pygame.K_ESCAPE):
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-                player.playerMove(event.key)
+            # 移動
+        player.playerMove()
 
         player.draw(game_screen.surface)
         # 一直更新pygame的畫面
-        
+
         pygame.display.flip()
-        
+
         clock.tick(60)
+
 
 if __name__ == "__main__":
     main()
