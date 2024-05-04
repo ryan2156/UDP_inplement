@@ -1,15 +1,20 @@
 import socket
+import json
 
-HOST = '120.109.159.29'
-PORT = 8000
-server_addr = (HOST, PORT)
+HOST = "localhost"  # The server's hostname or IP address
+PORT = 5000  # The server's port number
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create a UDP socket
 
-while True:
-    outdata = input('please input message: ')
-    print('sendto ' + str(server_addr) + ': ' + outdata)
-    s.sendto(outdata.encode(), server_addr)
-    
-    indata, addr = s.recvfrom(1024)
-    print('recvfrom ' + str(addr) + ': ' + indata.decode())
+# Send a message to the server
+message = {"type": "message", "message": "Hello from the client!"}
+message_data = json.dumps(message).encode("utf-8")
+client.sendto(message_data, (HOST, PORT))
+
+# Receive a response from the server
+data, addr = client.recvfrom(1024)
+print(f"Received data from {addr}")
+
+# Decode the JSON data
+data = json.loads(data.decode("utf-8"))
+print(f"Server says: {data['message']}")
