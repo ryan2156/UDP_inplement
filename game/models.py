@@ -30,6 +30,9 @@ class Player:
         self.radius = HIT_BOX
         self.color = color
         self.rect = pygame.Rect(x, y, HIT_BOX * 2, HIT_BOX * 2)
+        self.command = {
+            "wasd": [0, 0, 0, 0]
+        }
 
     def draw(self, surface):
         circle_pos = (self.rect.left + self.radius, self.rect.top + self.radius)
@@ -54,3 +57,18 @@ class Player:
 
         self.player_vx = 0
         self.player_vy = 0
+        
+    def playerCommand(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_w]:
+            self.command["wasd"][0] = 1
+        if key[pygame.K_a]:
+            self.command["wasd"][1] = 1
+        if key[pygame.K_s]:
+            self.command["wasd"][2] = 1
+        if key[pygame.K_d]:
+            self.command["wasd"][3] = 1
+
+    def resetCommand(self):
+        for i in range(len(self.command["wasd"])):
+            self.command["wasd"][i] = 0
