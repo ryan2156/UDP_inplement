@@ -16,8 +16,8 @@ while True:
     data = json.loads(data.decode("utf-8"))
 
     # Process the data
-    if data["type"] == "message":
-        message = data["message"]
+    if data["type"] == "command":
+        message = data["command"]
         print(f"Client says: {message}")
 
         # Send a response to the client

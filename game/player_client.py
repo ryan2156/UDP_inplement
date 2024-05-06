@@ -1,4 +1,5 @@
 import socket
+import json
 
 import sys
 import pygame
@@ -10,10 +11,7 @@ from constants import *
 HOST = 'localhost'
 PORT = 5000
 
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create a UDP socket
-server.bind((HOST, PORT))  # Bind the socket to the host and port
-
-
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create a UDP socket
 
 pygame.init()
 game_screen = Window()
@@ -36,14 +34,19 @@ def main():
                 if(event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
-                player.playerMove(event.key)
-
+        player.playerCommand()
+        
+        message = {"type": "command", "command": player.command}
+        message_data = json.dumps(message).encode("utf-8")
+        client.sendto(message_data, (HOST, PORT))
+        player.resetCommand()
+        
         player.draw(game_screen.surface)
         # 一直更新pygame的畫面
         
         pygame.display.flip()
         
-        clock.tick(60)
+        clock.tick(1)
 
 if __name__ == "__main__":
     main()
