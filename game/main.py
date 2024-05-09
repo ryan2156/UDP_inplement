@@ -16,6 +16,7 @@ def main():
     while True:
         game_screen.surface.fill(BACKGROUND_COLOR)
         # 取得所有的Event
+        key = pygame.key.get_pressed()  # c
         for event in pygame.event.get():
             # 如果event是QUIT，也就是按右上角的x
             if event.type == pygame.QUIT:
@@ -28,7 +29,8 @@ def main():
                     pygame.quit()
                     sys.exit()
             # 移動
-        player.playerMove()
+        player.playerMove(key)
+        player.playerFire(key)
 
         player.draw(game_screen.surface)
         # 一直更新pygame的畫面
