@@ -32,8 +32,9 @@ class Player:
         self.radius = HIT_BOX
         self.color = color
         self.rect = pygame.Rect(x, y, HIT_BOX * 2, HIT_BOX * 2)
-        self.paint = []  # 墨水位置
-        self.bullet = BULLET
+        self.command = {
+            "wasd": [0, 0, 0, 0]
+        }
 
     def draw(self, surface):
         for i in self.paint:
@@ -41,15 +42,27 @@ class Player:
         circle_pos = (self.rect.left + self.radius, self.rect.top + self.radius)
         pygame.draw.circle(surface, self.color, circle_pos, self.radius)
 
-    def playerMove(self, key):
-        if key[pygame.K_w]:
-            self.player_vy -= PLAYER_SPEED
-        if key[pygame.K_s]:
-            self.player_vy += PLAYER_SPEED
-        if key[pygame.K_d]:
-            self.player_vx += PLAYER_SPEED
-        if key[pygame.K_a]:
-            self.player_vx -= PLAYER_SPEED
+    def playerMove(self, remote, keys=[]):
+        
+        if(not remote):
+            key = pygame.key.get_pressed()
+            if key[pygame.K_w]:
+                self.player_vy -= PLAYER_SPEED
+            if key[pygame.K_s]:
+                self.player_vy += PLAYER_SPEED
+            if key[pygame.K_d]:
+                self.player_vx += PLAYER_SPEED
+            if key[pygame.K_a]:
+                self.player_vx -= PLAYER_SPEED
+        else:
+            if(keys[0]):
+                self.player_vy -= PLAYER_SPEED
+            if(keys[1]):
+                self.player_vx -= PLAYER_SPEED
+            if(keys[2]):
+                self.player_vy += PLAYER_SPEED
+            if(keys[3]):
+                self.player_vx += PLAYER_SPEED
 
         self.player_x += self.player_vx
         self.player_y += self.player_vy
@@ -59,12 +72,44 @@ class Player:
 
         self.player_vx = 0
         self.player_vy = 0
+        
+    def playerCommand(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_w]:
+            self.command["wasd"][0] = 1
+        if key[pygame.K_a]:
+            self.command["wasd"][1] = 1
+        if key[pygame.K_s]:
+            self.command["wasd"][2] = 1
+        if key[pygame.K_d]:
+            self.command["wasd"][3] = 1
+
+    def resetCommand(self):
+        for i in range(len(self.command["wasd"])):
+            self.command["wasd"][i] = 0
 
     def playerFire(self, key):
         if key[pygame.K_SPACE]:
             mouse_x, mouse_y = pygame.mouse.get_pos()  # 獲取滑鼠位置
             player_mouse_angle = math.atan2(
                 self.player_y - mouse_y, self.player_x - mouse_x
+            rotate = math.atan2(self.player_y - mouse_y, self.player_x - mouse_x)
+            R = random.randrange(0, 200)
+            angle = random.uniform(-math.radians(30), math.radians(30))
+            self.paint = [
+                self.player_x - math.cos(rotate + angle) * R,
+                self.player_y - math.sin(rotate + angle) * R,
+            ]
+            random.randrange(0, 200)
+            print(
+                mouse_x,
+                mouse_y,
+                rotate,
+                # self.paint[0],
+                # self.paint[1],
+                math.cos(rotate),
+                math.sin(rotate),
+
             )
             for i in range(BULLET):
                 r = random.randrange(0, MAX_DISTANCE)

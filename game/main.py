@@ -9,7 +9,7 @@ pygame.init()
 game_screen = Window()
 clock = pygame.time.Clock()
 
-player = Player(50, 50, PLAYER_COLOR)
+player = Player(50, 50, PLAYER_COLOR_1)
 
 
 def main():
@@ -29,7 +29,7 @@ def main():
                     pygame.quit()
                     sys.exit()
             # 移動
-        player.playerMove(key)
+        player.playerMove(remote = 0)
         player.playerFire(key)
 
         player.draw(game_screen.surface)
@@ -37,7 +37,7 @@ def main():
 
         pygame.display.flip()
 
-        clock.tick(60)
+        clock.tick(FRAMN)
 
 
 if __name__ == "__main__":
