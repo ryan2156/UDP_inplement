@@ -38,16 +38,27 @@ class Player:
         circle_pos = (self.rect.left + self.radius, self.rect.top + self.radius)
         pygame.draw.circle(surface, self.color, circle_pos, self.radius)
 
-    def playerMove(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_w]:
-            self.player_vy -= PLAYER_SPEED
-        if key[pygame.K_s]:
-            self.player_vy += PLAYER_SPEED
-        if key[pygame.K_d]:
-            self.player_vx += PLAYER_SPEED
-        if key[pygame.K_a]:
-            self.player_vx -= PLAYER_SPEED
+    def playerMove(self, remote, keys=[]):
+        
+        if(not remote):
+            key = pygame.key.get_pressed()
+            if key[pygame.K_w]:
+                self.player_vy -= PLAYER_SPEED
+            if key[pygame.K_s]:
+                self.player_vy += PLAYER_SPEED
+            if key[pygame.K_d]:
+                self.player_vx += PLAYER_SPEED
+            if key[pygame.K_a]:
+                self.player_vx -= PLAYER_SPEED
+        else:
+            if(keys[0]):
+                self.player_vy -= PLAYER_SPEED
+            if(keys[1]):
+                self.player_vx -= PLAYER_SPEED
+            if(keys[2]):
+                self.player_vy += PLAYER_SPEED
+            if(keys[3]):
+                self.player_vx += PLAYER_SPEED
 
         self.player_x += self.player_vx
         self.player_y += self.player_vy
