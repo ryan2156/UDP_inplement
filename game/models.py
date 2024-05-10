@@ -1,5 +1,7 @@
 import pygame
 from constants import *
+import random
+import math
 
 
 class Window:
@@ -63,8 +65,8 @@ class Player:
         self.player_x += self.player_vx
         self.player_y += self.player_vy
 
-        self.rect.x = self.player_x  # 更新 rect 的 x 坐标
-        self.rect.y = self.player_y  # 更新 rect 的 y 坐标
+        self.rect.x = self.player_x - self.radius  # 更新 rect 的 x 坐标
+        self.rect.y = self.player_y - self.radius  # 更新 rect 的 y 坐标
 
         self.player_vx = 0
         self.player_vy = 0
@@ -83,3 +85,24 @@ class Player:
     def resetCommand(self):
         for i in range(len(self.command["wasd"])):
             self.command["wasd"][i] = 0
+
+    def playerFire(self, key):
+        if key[pygame.K_SPACE]:
+            mouse_x, mouse_y = pygame.mouse.get_pos()  # 獲取滑鼠位置
+            rotate = math.atan2(self.player_y - mouse_y, self.player_x - mouse_x)
+            R = random.randrange(0, 200)
+            angle = random.uniform(-math.radians(30), math.radians(30))
+            self.paint = [
+                self.player_x - math.cos(rotate + angle) * R,
+                self.player_y - math.sin(rotate + angle) * R,
+            ]
+            random.randrange(0, 200)
+            print(
+                mouse_x,
+                mouse_y,
+                rotate,
+                # self.paint[0],
+                # self.paint[1],
+                math.cos(rotate),
+                math.sin(rotate),
+            )

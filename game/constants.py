@@ -1,7 +1,7 @@
 
 # Screen
 SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 800
+SCREEN_HEIGHT = 700
 SCREEN_COLOR = "black"
 SCREEN_TITLE = "噴噴"
 BACKGROUND_COLOR = (0, 0, 0)
@@ -15,3 +15,7 @@ PLAYER_COLOR_2 = (255, 215, 0)
 
 # Connection
 TIMEOUT = 0.1
+
+
+# Gun1
+BULLET = 5

@@ -9,13 +9,14 @@ pygame.init()
 game_screen = Window()
 clock = pygame.time.Clock()
 
-player = Player(50, 50, PLAYER_COLOR)
+player = Player(50, 50, PLAYER_COLOR_1)
 
 
 def main():
     while True:
         game_screen.surface.fill(BACKGROUND_COLOR)
         # 取得所有的Event
+        key = pygame.key.get_pressed()  # c
         for event in pygame.event.get():
             # 如果event是QUIT，也就是按右上角的x
             if event.type == pygame.QUIT:
@@ -28,14 +29,15 @@ def main():
                     pygame.quit()
                     sys.exit()
             # 移動
-        player.playerMove()
+        player.playerMove(remote = 0)
+        player.playerFire(key)
 
         player.draw(game_screen.surface)
         # 一直更新pygame的畫面
 
         pygame.display.flip()
 
-        clock.tick(60)
+        clock.tick(FRAMN)
 
 
 if __name__ == "__main__":
