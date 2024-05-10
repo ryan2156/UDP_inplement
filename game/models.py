@@ -37,6 +37,8 @@ class Player:
         }
 
     def draw(self, surface):
+        for i in self.paint:
+            pygame.draw.rect(surface, BULLET_COLOR, i, 0)
         circle_pos = (self.rect.left + self.radius, self.rect.top + self.radius)
         pygame.draw.circle(surface, self.color, circle_pos, self.radius)
 
@@ -89,6 +91,8 @@ class Player:
     def playerFire(self, key):
         if key[pygame.K_SPACE]:
             mouse_x, mouse_y = pygame.mouse.get_pos()  # 獲取滑鼠位置
+            player_mouse_angle = math.atan2(
+                self.player_y - mouse_y, self.player_x - mouse_x
             rotate = math.atan2(self.player_y - mouse_y, self.player_x - mouse_x)
             R = random.randrange(0, 200)
             angle = random.uniform(-math.radians(30), math.radians(30))
@@ -105,4 +109,48 @@ class Player:
                 # self.paint[1],
                 math.cos(rotate),
                 math.sin(rotate),
+
             )
+            for i in range(BULLET):
+                r = random.randrange(0, MAX_DISTANCE)
+                max_angle = math.radians(MAX_ANGLE)  # 扇形的最大角度
+                angle = random.uniform(
+                    player_mouse_angle - max_angle / 2,
+                    player_mouse_angle + max_angle / 2,
+                )
+                distance = random.uniform(0, r)
+                paint = [
+                    round(self.player_x - math.cos(angle) * distance, -1),
+                    round(self.player_y - math.sin(angle) * distance, -1),
+                    10,
+                    10,
+                ]
+                if paint not in self.paint:
+                    self.paint.append(paint)
+            print(len(self.paint))
+
+    # def playerFire(self, key):
+    #     if key[pygame.K_SPACE]:
+    #         mouse_x, mouse_y = pygame.mouse.get_pos()  # 獲取滑鼠位置
+    #         rotate = math.atan2(self.player_y - mouse_y, self.player_x - mouse_x)
+    #         R = random.randrange(0, 200)
+    #         angle = random.uniform(-math.radians(30), math.radians(30))
+    #         paint = [
+    #             round(self.player_x - math.cos(rotate + angle) * R, -1),
+    #             round(self.player_y - math.sin(rotate + angle) * R, -1),
+    #             10,
+    #             10,
+    #         ]
+    #         if paint not in self.paint:
+    #             self.paint.append(paint)
+    #         print(
+    #             # mouse_x,
+    #             # mouse_y,
+    #             # rotate,
+    #             # self.paint[0],
+    #             # self.paint[1],
+    #             # self.paint[2],
+    #             # self.paint[3],
+    #             # math.cos(rotate),
+    #             # math.sin(rotate),
+    #         )

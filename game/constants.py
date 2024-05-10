@@ -10,12 +10,17 @@ FRAMN = 60
 # Player
 HIT_BOX = 30
 PLAYER_SPEED = 5
+
+PLAYER_COLOR = (65, 105, 225)
+
 PLAYER_COLOR_1 = (65, 105, 225)
 PLAYER_COLOR_2 = (255, 215, 0)
 
 # Connection
 TIMEOUT = 0.1
 
-
 # Gun1
+BULLET_COLOR = (65, 105, 200)
 BULLET = 5
+MAX_DISTANCE = 200  # 射擊距離
+MAX_ANGLE = 0  # 最大射擊散度
