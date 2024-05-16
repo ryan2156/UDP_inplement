@@ -48,11 +48,17 @@ def main():
                     pygame.quit()
                     sys.exit()
         
-        # # 移動
+        # 移動
         player_server.playerMove(remote = 0)
+        
+        # 開火
+        bullets_server = player_server.playerFire()
+        
+        # client
         try:
-            player_client.playerMove(remote = 1, keys = data["command"]["wasd"])
-            print(f"Client says: {client_command}")
+            player_client.playerMove(remote = 1, keys = client_command["wasd"])
+            
+            # print(f"Client says: {client_command}")
         except:
             pass
         
@@ -60,7 +66,7 @@ def main():
         # 回傳角色狀態
         status = {
             "type": "status",
-            "player_server": [player_server.player_x, player_server.player_y],
+            "player_server": [player_server.player_x, player_server.player_y, bullets_server],
             "player_client": [player_client.player_x, player_client.player_y],
         }
         
@@ -69,6 +75,7 @@ def main():
             server.sendto(status_data, addr)
         except:
             pass
+        
         # 更新狀態
         player_server.draw(game_screen.surface)
         player_client.draw(game_screen.surface)
