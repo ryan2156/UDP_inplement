@@ -20,13 +20,15 @@ client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Create a UDP socket
 pygame.init()
 game_screen = Window()
 clock = pygame.time.Clock()
-player_server = Player(50, 50, PLAYER_COLOR_1)
-player_client = Player(100, 100, PLAYER_COLOR_2)
+player_server = Player(50, 50, PLAYER_COLOR_1, BULLET_COLOR_1)
+player_client = Player(100, 100, PLAYER_COLOR_2, BULLET_COLOR_2)
+
 
 def main():
+    
     while True:
         game_screen.surface.fill(BACKGROUND_COLOR)
-
+        
         # 處理暫停、關遊戲
         for event in pygame.event.get():
             # 如果event是QUIT，也就是按右上角的x
@@ -60,11 +62,19 @@ def main():
                 player_server.player_y = response["player_server"][1]
                 player_server.rect.y = player_server.player_y
                 
+                # print("Server says:", player_server.paint)
+                if(response["player_server"][2]):
+                    player_server.paint.append(response["player_server"][2])
+                
                 player_client.player_x = response["player_client"][0]
                 player_client.rect.x = player_client.player_x
                 
                 player_client.player_y = response["player_client"][1]
                 player_client.rect.y = player_client.player_y
+                
+                # print("Client says:", response["player_client"][2])
+                if(response["player_client"][2]):
+                    player_client.paint.append(response["player_client"][2])
         
         # 將角色的狀態更新
         player_server.draw(game_screen.surface)

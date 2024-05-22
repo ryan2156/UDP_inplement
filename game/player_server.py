@@ -19,15 +19,15 @@ server.bind((HOST, PORT))  # Bind the socket to the host and port
 pygame.init()
 game_screen = Window()
 clock = pygame.time.Clock()
-player_server = Player(50, 50, PLAYER_COLOR_1)
-player_client = Player(100, 100, PLAYER_COLOR_2)
+player_server = Player(50, 50, PLAYER_COLOR_1, BULLET_COLOR_1)
+player_client = Player(100, 100, PLAYER_COLOR_2, BULLET_COLOR_2)
 
 def main():
     while True:
         game_screen.surface.fill(BACKGROUND_COLOR)
         
         
-        # # 從client 取得事件
+        # 從client 取得事件
         with eventlet.Timeout(TIMEOUT, False):
             data, addr = server.recvfrom(1024)
             data = json.loads(data.decode("utf-8"))
@@ -52,22 +52,29 @@ def main():
         player_server.playerMove(remote = 0)
         
         # 開火
-        bullets_server = player_server.playerFire()
+        bullet_server = player_server.playerFire(remote=0)
+        
         
         # client
+        bullet_client = [None, None]
         try:
             player_client.playerMove(remote = 1, keys = client_command["wasd"])
+            # print(client_command["mouse"])
+            fire = [client_command["firing"], client_command["mouse"]]
             
+            bullet_client = player_client.playerFire(remote=1, keys=fire)
+            # print(fire)
             # print(f"Client says: {client_command}")
         except:
+            # print("fail")
             pass
         
 
         # 回傳角色狀態
         status = {
             "type": "status",
-            "player_server": [player_server.player_x, player_server.player_y, bullets_server],
-            "player_client": [player_client.player_x, player_client.player_y],
+            "player_server": [player_server.player_x, player_server.player_y, bullet_server],
+            "player_client": [player_client.player_x, player_client.player_y, bullet_client],
         }
         
         status_data = json.dumps(status).encode("utf-8")
