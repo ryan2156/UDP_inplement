@@ -63,7 +63,10 @@ def main():
                 player_server.rect.y = player_server.player_y
 
                 # print("Server says:", player_server.paint)
-                if response["player_server"][2]:
+                if (
+                    response["player_server"][2]
+                    and response["player_server"][2] not in player_server.paint
+                ):
                     player_server.paint.append(response["player_server"][2])
 
                 player_client.player_x = response["player_client"][0]
@@ -73,7 +76,10 @@ def main():
                 player_client.rect.y = player_client.player_y
 
                 # print("Client says:", response["player_client"][2])
-                if response["player_client"][2]:
+                if (
+                    response["player_client"][2]
+                    and response["player_client"][2] not in player_client.paint
+                ):
                     player_client.paint.append(response["player_client"][2])
 
         # 將角色的狀態更新
@@ -81,6 +87,7 @@ def main():
         player_server.drawBullet(game_screen.surface)
         player_client.drawPlayer(game_screen.surface)
         player_server.drawPlayer(game_screen.surface)
+        print(len(player_client.paint))
         # 更新pygame的畫面
         pygame.display.flip()
 

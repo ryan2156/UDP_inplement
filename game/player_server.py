@@ -94,6 +94,7 @@ def main():
         player_client.drawBullet(game_screen.surface)
         player_server.drawPlayer(game_screen.surface)
         player_client.drawPlayer(game_screen.surface)
+        print(len(player_client.paint))
         # 一直更新pygame的畫面
 
         pygame.display.flip()

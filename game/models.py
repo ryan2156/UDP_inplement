@@ -83,7 +83,6 @@ class Player:
         key = pygame.key.get_pressed()
 
         if key[pygame.K_w]:
-            print(self.player_x)
             self.command["wasd"][0] = 1
         if key[pygame.K_a]:
             self.command["wasd"][1] = 1
