@@ -2,6 +2,7 @@ import pygame
 from constants import *
 import random
 import math
+import json
 
 
 class Window:
@@ -35,6 +36,7 @@ class Player:
         self.rect = pygame.Rect(x, y, HIT_BOX * 2, HIT_BOX * 2)
         self.command = {"wasd": [0, 0, 0, 0], "firing": 0, "mouse": [None, None]}
         self.paint = []  # [X, Y, width, height]
+        self.bullet = []
         self.bullet_size = BULLET_SIZE
 
     def drawBullet(self, surface):
@@ -131,7 +133,7 @@ class Player:
                         RECT_WIDTH,  # 正方形寬
                     ]
                     if paint not in self.paint:
-                        self.paint.append(paint)
+                        self.bullet.append(paint)
                     return paint[:]
         # client
         else:
@@ -159,5 +161,34 @@ class Player:
                         RECT_WIDTH,  # 正方形寬
                     ]
                     if paint not in self.paint:
-                        self.paint.append(paint)
+                        self.bullet.append(paint)
                     return paint[:]
+
+    def waitWindow(self, surface):
+        font = pygame.font.SysFont("simhei", 24)
+        text = font.render("Hello", True, (0, 0, 255), (255, 255, 255))
+        surface.blit(text, (320, 240))
+
+
+class SR:
+    def segmentation(data_dict):
+        # 將 dict 轉換為 JSON 字符串
+        json_str = json.dumps(data_dict)
+        # 定義每個封包的大小（以字符為單位）
+        packet_size = len(data_dict) / 5 + 1
+        # 將 JSON 字符串分割成小封包
+        packets = [
+            json_str[i : i + packet_size] for i in range(0, len(json_str), packet_size)
+        ]
+        # 打印每個封包
+        for i, packet in enumerate(packets):
+            print(f"Packet {i+1}: {packet}")
+        # 如果需要將封包重新組合成完整的 JSON 字符串
+
+    def recvDate(packets):
+        reconstructed_json_str = "".join(packets)
+        # 將 JSON 字符串轉回 dict
+        reconstructed_dict = json.loads(reconstructed_json_str)
+        print("\nReconstructed Dictionary:")
+        print(reconstructed_dict)
+        return reconstructed_dict
